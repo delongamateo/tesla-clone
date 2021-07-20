@@ -2,9 +2,14 @@ import React, { useState} from 'react'
 import styled from "styled-components";
 import MenuIcon from "@material-ui/icons/Menu";
 import CloseIcon from "@material-ui/icons/Close";
+import {selectCars} from "../../features/car/carSlice";
+import {useSelector} from "react-redux";
 
 function Header() {
     const [burgerStatus, setBurgerStatus] = useState(false);
+    const cars = useSelector(selectCars);
+
+    console.log(cars);
 
     return (
       <Container>
@@ -12,13 +17,14 @@ function Header() {
           <img src="/images/logo.svg" />
         </a>
         <Menu>
-          <a href="#">Model S</a>
-          <a href="#">Model 3</a>
-          <a href="#">Model X</a>
-          <a href="#">Model Y</a>
+          {cars &&
+            cars.map((car, i) => (
+              <a key={i} href="#">
+                {car}
+              </a>
+            ))}
         </Menu>
         <RightMenu>
-          <a href="#">Shop</a>
           <a href="#">Tesla Account</a>
           <CustomMenu onClick={() => setBurgerStatus(true)} />
         </RightMenu>
@@ -26,24 +32,27 @@ function Header() {
           <CloseWrapper>
             <CustomClose onClick={() => setBurgerStatus(false)} />
           </CloseWrapper>
-          <li>
-            <a href="#">Existing Inventory</a>
-          </li>
-          <li>
-            <a href="#">Used Inventory</a>
-          </li>
-          <li>
-            <a href="#">Trade-in</a>
-          </li>
-          <li>
-            <a href="#">Cybertruck</a>
-          </li>
-          <li>
-            <a href="#">Roadster</a>
-          </li>
-          <li>
-            <a href="#">Existing Inventory</a>
-          </li>
+            {cars &&
+                cars.map((car, i) => (
+                <li key={i}>
+                    <a href="#">{car}</a>
+                </li>
+                ))}
+            <li>
+                <a href="#">Cybertruck</a>
+            </li>
+            <li>
+                <a href="#">Roadster</a>
+            </li>
+                <li>
+                <a href="#">Existing Inventory</a>
+            </li>
+            <li>
+                <a href="#">Used Inventory</a>
+            </li>
+            <li>
+                <a href="#">Trade-in</a>
+            </li>
         </BurgerNav>
       </Container>
     );
@@ -60,6 +69,12 @@ const Container = styled.div`
     left: 0;
     right: 0;
     z-index: 1;
+    
+
+    img {
+        padding-top: 20px;
+        margin-right: 80px;
+    }
 `
 
 const Menu = styled.div`
